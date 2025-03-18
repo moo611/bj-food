@@ -1,0 +1,30 @@
+server:
+  port: 8081
+  address: 0.0.0.0
+# mybatis??
+mybatis:
+  # ???????
+  typeAliasesPackage: com.example.bjfood
+  # ??mapper?????????mapper.xml????
+  mapperLocations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: jindesong
+    url: jdbc:mysql://localhost:3306/ry-vue?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    #url: jdbc:mysql://mysql:3306/ry-vue?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+  jackson:
+    time-zone: Asia/Shanghai
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+pagehelper:
+  helper-dialect: mysql
+  reasonable: false
+  support-methods-arguments: true
+  params: count=countSql
+
+

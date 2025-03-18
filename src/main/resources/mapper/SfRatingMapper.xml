@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bjfood.mapper.SfRatingMapper">
+
+    <resultMap type="com.example.bjfood.domain.SfRating" id="SfRatingResult">
+        <result property="id"    column="id"    />
+        <result property="username"    column="username"    />
+        <result property="foodId"    column="food_id"    />
+        <result property="rating"    column="rating"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectSfRatingVo">
+        select id, username, food_id, rating, del_flag, create_time, create_by, update_time, update_by from sf_rating
+    </sql>
+
+    <select id="selectSfRatingList" parameterType="com.example.bjfood.domain.SfRating" resultMap="SfRatingResult">
+        <include refid="selectSfRatingVo"/>
+        <where>del_flag='0'
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="foodId != null "> and food_id = #{foodId}</if>
+            <if test="rating != null "> and rating = #{rating}</if>
+        </where>
+    </select>
+
+    <select id="selectSfRatingById" parameterType="long" resultMap="SfRatingResult">
+        <include refid="selectSfRatingVo"/>
+        where del_flag='0' and id = #{id}
+    </select>
+
+    <insert id="insertSfRating" parameterType="com.example.bjfood.domain.SfRating" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_rating
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">username,</if>
+            <if test="foodId != null">food_id,</if>
+            <if test="rating != null">rating,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">#{username},</if>
+            <if test="foodId != null">#{foodId},</if>
+            <if test="rating != null">#{rating},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSfRating" parameterType="com.example.bjfood.domain.SfRating">
+        update sf_rating
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="foodId != null">food_id = #{foodId},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSfRatingById" parameterType="long">
+        update sf_rating set del_flag='2' where id = #{id}
+    </delete>
+
+    <delete id="deleteSfRatingByIds" parameterType="long">
+        update sf_rating set del_flag='2' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findRatingsByUsername" parameterType="string" resultMap="SfRatingResult">
+        <include refid="selectSfRatingVo"/>
+        where del_flag='0' and username = #{username}
+    </select>
+
+    <select id="selectFoodIdsByUsername" parameterType="string" resultType="long">
+        select food_id from sf_rating
+        where del_flag='0' and username = #{username}
+    </select>
+
+    <select id="selectSfRatingByUser" resultMap="SfRatingResult">
+        <include refid="selectSfRatingVo"/>
+        where del_flag='0' and food_id = #{foodId} and username = #{username}
+    </select>
+</mapper>

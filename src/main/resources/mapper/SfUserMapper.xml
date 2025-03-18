@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bjfood.mapper.SfUserMapper">
+
+    <resultMap type="com.example.bjfood.domain.SfUser" id="SfUserResult">
+        <result property="id"    column="id"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="role"    column="role"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+
+
+    </resultMap>
+
+    <sql id="selectSfUserVo">
+        select id, username, password, nickname, `role`, del_flag, create_time, create_by, update_time, update_by from sf_user
+    </sql>
+
+    <select id="selectSfUserList" parameterType="com.example.bjfood.domain.SfUser" resultMap="SfUserResult">
+        <include refid="selectSfUserVo"/>
+        <where>del_flag='0'
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="role != null  and role != ''"> and `role` = #{role}</if>
+        </where>
+    </select>
+
+    <select id="selectSfUserById" parameterType="string" resultMap="SfUserResult">
+        <include refid="selectSfUserVo"/>
+        where del_flag='0' and id = #{id}
+    </select>
+    <select id="selectSfUserByUsername" parameterType="string" resultMap="SfUserResult">
+        <include refid="selectSfUserVo"/>
+        where del_flag='0' and username = #{username}
+    </select>
+
+    <insert id="insertSfUser" parameterType="com.example.bjfood.domain.SfUser">
+        insert into sf_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="role != null">`role`,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="role != null">#{role},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateSfUser" parameterType="com.example.bjfood.domain.SfUser">
+        update sf_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="role != null">`role` = #{role},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSfUserById" parameterType="string">
+        update sf_user set del_flag='2' where id = #{id}
+    </delete>
+
+    <delete id="deleteSfUserByIds" parameterType="string">
+        update sf_user set del_flag='2' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

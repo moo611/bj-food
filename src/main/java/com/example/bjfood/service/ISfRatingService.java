@@ -1,0 +1,61 @@
+package com.example.bjfood.service;
+
+import java.util.List;
+import com.example.bjfood.domain.SfRating;
+
+/**
+ * 评分Service接口
+ *
+ * @author ruoyi
+ * @date 2025-03-11
+ */
+public interface ISfRatingService
+{
+    /**
+     * 查询评分
+     *
+     * @param id 评分主键
+     * @return 评分
+     */
+    public SfRating selectSfRatingById(Long id);
+
+    /**
+     * 查询评分列表
+     *
+     * @param sfRating 评分
+     * @return 评分集合
+     */
+    public List<SfRating> selectSfRatingList(SfRating sfRating);
+
+    /**
+     * 新增评分
+     *
+     * @param sfRating 评分
+     * @return 结果
+     */
+    public int insertSfRating(SfRating sfRating);
+
+    /**
+     * 修改评分
+     *
+     * @param sfRating 评分
+     * @return 结果
+     */
+    public int updateSfRating(SfRating sfRating);
+
+    /**
+     * 批量删除评分
+     *
+     * @param ids 需要删除的评分主键集合
+     * @return 结果
+     */
+    public int deleteSfRatingByIds(Long[] ids);
+
+    /**
+     * 删除评分信息
+     *
+     * @param id 评分主键
+     * @return 结果
+     */
+    public int deleteSfRatingById(Long id);
+}
