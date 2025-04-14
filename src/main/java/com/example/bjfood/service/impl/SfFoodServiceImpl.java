@@ -49,7 +49,16 @@ public class SfFoodServiceImpl implements ISfFoodService {
      */
     @Override
     public List<SfFood> selectSfFoodList(SfFood sfFood) {
-        return sfFoodMapper.selectSfFoodList(sfFood);
+
+        List<SfFood>foods = sfFoodMapper.selectSfFoodList(sfFood);
+
+        for (SfFood food : foods) {
+            Double rating = sfRatingMapper.getAverageRating(food.getId());
+
+            food.setRating(rating);
+        }
+
+        return foods;
     }
 
     /**
@@ -160,7 +169,13 @@ public class SfFoodServiceImpl implements ISfFoodService {
         if (recommendedFoodIds.isEmpty()){
             return Collections.emptyList();
         }
-        return sfFoodMapper.selectSfFoodListByIds(recommendedFoodIds);
+        List<SfFood>sfFoods = sfFoodMapper.selectSfFoodListByIds(recommendedFoodIds);
+        for (SfFood food : sfFoods) {
+            double rating = sfRatingMapper.getAverageRating(food.getId());
+            food.setRating(rating);
+        }
+        sfFoods.sort((o1, o2) -> o2.getRating().compareTo(o1.getRating()));
+        return sfFoods;
     }
 
 

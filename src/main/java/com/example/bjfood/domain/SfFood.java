@@ -41,6 +41,17 @@ public class SfFood extends BaseEntity
     /** 删除标识 */
     private String delFlag;
 
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    private Double rating;
+
     public void setId(Long id)
     {
         this.id = id;

@@ -68,4 +68,6 @@ public interface SfRatingMapper
 
     SfRating selectSfRatingByUser(String username, Long foodId);
 
+    Double getAverageRating(Long foodId);
+
 }
