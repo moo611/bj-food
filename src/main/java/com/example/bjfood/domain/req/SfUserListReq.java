@@ -7,4 +7,6 @@ import lombok.Data;
 public class SfUserListReq extends BaseReq {
 
     String role;
+
+    String nickname;
 }
